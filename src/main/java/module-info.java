@@ -1,4 +1,4 @@
-module com.expiracy.osumusicplayer2 {
+module com.expiracy.osumusicplayer {
     requires javafx.controls;
     requires javafx.fxml;
 
@@ -6,6 +6,8 @@ module com.expiracy.osumusicplayer2 {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
 
-    opens com.expiracy.osumusicplayer2 to javafx.fxml;
-    exports com.expiracy.osumusicplayer2;
+    opens com.expiracy.osumusicplayer to javafx.fxml;
+    exports com.expiracy.osumusicplayer;
+    exports com.expiracy.osumusicplayer.parsing;
+    opens com.expiracy.osumusicplayer.parsing to javafx.fxml;
 }

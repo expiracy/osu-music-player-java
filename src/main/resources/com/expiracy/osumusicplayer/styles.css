@@ -1,0 +1,60 @@
+.side-button {
+    -fx-background-color: transparent;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-min-width: 100%;
+    -fx-text-fill: #b7b7b7;
+    -fx-alignment: center;
+    -fx-padding: 10px;
+}
+
+.side-button:hover {
+    -fx-text-fill: #ffffff;
+}
+
+.background-boxes > * {
+    -fx-background-color: black;
+}
+
+.background-box {
+    -fx-padding: 10px;
+}
+
+
+.side-box {
+    -fx-background-color: #181818;
+    -fx-background-radius: 10px;
+}
+
+.songs-box > .viewport {
+    -fx-background-color: #181818;
+    -fx-background-radius: 10px;
+}
+
+.bottom-box {
+    -fx-background-color: black;
+}
+
+.song-button {
+    -fx-background-color: transparent;
+    -fx-min-height: 50px;
+    -fx-padding: 10px;
+    -fx-font-family: "Segoe UI";
+    -fx-min-width: 100%;
+}
+
+.title {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.artist {
+    -fx-text-fill: #a2a2a2;
+    -fx-font-size: 12px;
+}
+
+.song-button:hover {
+    -fx-background-color: #232323;
+}
