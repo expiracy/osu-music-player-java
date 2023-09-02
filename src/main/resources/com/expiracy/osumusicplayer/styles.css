@@ -6,7 +6,7 @@
     -fx-min-width: 100%;
     -fx-text-fill: #b7b7b7;
     -fx-alignment: center;
-    -fx-padding: 10px;
+    -fx-padding: 15px;
 }
 
 .side-button:hover {
@@ -32,8 +32,15 @@
     -fx-background-radius: 10px;
 }
 
-.bottom-box {
+.player-box {
     -fx-background-color: black;
+}
+
+.playing-info-box {
+    -fx-alignment: center; /* Vertically center align the HBox and VBox */
+    -fx-spacing: 10px; /* Add padding between the HBox and VBox */
+    -fx-pref-height: 75px; /* Set the preferred height of the VBox */
+    -fx-max-height: 75px; /* Set the maximum height of the VBox */
 }
 
 .song-button {
@@ -51,10 +58,18 @@
 }
 
 .artist {
-    -fx-text-fill: #a2a2a2;
+    -fx-text-fill: #bebebe;
     -fx-font-size: 12px;
 }
 
 .song-button:hover {
     -fx-background-color: #232323;
+}
+
+.song-number {
+    -fx-font-size: 15px;
+    -fx-text-fill: #bebebe;
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+    -fx-padding: 8px;
 }
