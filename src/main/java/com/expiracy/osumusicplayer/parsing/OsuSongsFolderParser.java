@@ -56,7 +56,15 @@ public class OsuSongsFolderParser {
                 if (osuBeatmapParser.audioFileName == null || osuBeatmapParser.title == null || osuBeatmapParser.artist == null)
                     return null;
 
+
+                String audioFileName = osuBeatmapParser.audioFileName;
+
+                if (audioFileName.endsWith(".ogg")) {
+                    return null;
+                }
+
                 song.setMp3(file.getParent() + "/" + osuBeatmapParser.audioFileName);
+
                 song.setTitle(osuBeatmapParser.title);
                 song.setArtist(osuBeatmapParser.artist);
 

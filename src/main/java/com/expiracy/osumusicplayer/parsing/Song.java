@@ -40,19 +40,23 @@ public class Song {
     }
 
     public File getMp3() {
-        return mp3;
+        return this.mp3;
+    }
+
+    public String getMp3Path() {
+        return this.mp3.getAbsolutePath();
     }
 
     public File getImage() {
-        return image;
+        return this.image;
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public String getArtist() {
-        return artist;
+        return this.artist;
     }
 
     @Override

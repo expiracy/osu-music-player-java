@@ -5,12 +5,41 @@
     -fx-font-weight: bold;
     -fx-min-width: 100%;
     -fx-text-fill: #b7b7b7;
-    -fx-alignment: center;
+    -fx-alignment: center-left;
     -fx-padding: 15px;
+    -fx-pref-width: 300px;
 }
 
 .side-button:hover {
     -fx-text-fill: #ffffff;
+}
+
+.player-controls {
+    -fx-spacing: 20px;
+    -fx-alignment: center;
+}
+
+.player {
+    -fx-max-width: 750px;
+    -fx-pref-width: 750px;
+}
+
+.slider .track {
+    -fx-background-color: #3b3b3b;
+}
+
+.slider .thumb {
+    -fx-background-color: #ffffff;
+}
+
+.player-box {
+    -fx-alignment: center;
+    -fx-spacing: 10px;
+}
+
+.volume-box {
+    -fx-alignment: center-right;
+    -fx-padding: 10px;
 }
 
 .background-boxes > * {
@@ -21,10 +50,14 @@
     -fx-padding: 10px;
 }
 
-
 .side-box {
     -fx-background-color: #181818;
     -fx-background-radius: 10px;
+}
+
+.song-buttons {
+    -fx-min-width: 100%;
+    -fx-background-color: transparent;
 }
 
 .songs-box > .viewport {
@@ -32,15 +65,21 @@
     -fx-background-radius: 10px;
 }
 
-.player-box {
-    -fx-background-color: black;
+.playing-info-box {
+    -fx-alignment: center-left;
+    -fx-spacing: 10px;
+    -fx-padding: 10px;
+    -fx-pref-height: 75px;
+    -fx-max-height: 75px;
+    -fx-max-width: 300px;
 }
 
-.playing-info-box {
-    -fx-alignment: center; /* Vertically center align the HBox and VBox */
-    -fx-spacing: 10px; /* Add padding between the HBox and VBox */
-    -fx-pref-height: 75px; /* Set the preferred height of the VBox */
-    -fx-max-height: 75px; /* Set the maximum height of the VBox */
+.title:hover {
+    -fx-underline: true;
+}
+
+.artist:hover {
+    -fx-underline: true;
 }
 
 .song-button {
@@ -49,17 +88,18 @@
     -fx-padding: 10px;
     -fx-font-family: "Segoe UI";
     -fx-min-width: 100%;
+    -fx-pref-width: 2147483647;
 }
 
 .title {
     -fx-text-fill: #ffffff;
-    -fx-font-size: 15px;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 
 .artist {
     -fx-text-fill: #bebebe;
-    -fx-font-size: 12px;
+    -fx-font-size: 11px;
 }
 
 .song-button:hover {
@@ -72,4 +112,12 @@
     -fx-alignment: center;
     -fx-font-weight: bold;
     -fx-padding: 8px;
+}
+
+.volume {
+
+}
+
+.play-pause {
+    -fx-background-color: transparent;
 }
