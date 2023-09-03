@@ -12,4 +12,8 @@ module com.expiracy.osumusicplayer {
     exports com.expiracy.osumusicplayer;
     exports com.expiracy.osumusicplayer.parsing;
     opens com.expiracy.osumusicplayer.parsing to javafx.fxml;
+    exports com.expiracy.osumusicplayer.data;
+    opens com.expiracy.osumusicplayer.data to javafx.fxml;
+    exports com.expiracy.osumusicplayer.components;
+    opens com.expiracy.osumusicplayer.components to javafx.fxml;
 }

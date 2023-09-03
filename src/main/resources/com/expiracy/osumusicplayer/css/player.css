@@ -1,0 +1,52 @@
+.play, .pause {
+    -fx-background-color: transparent;
+}
+
+.seek-slider {
+    -fx-max-width: 750px;
+    -fx-pref-width: 750px;
+    -fx-min-width: 250px;
+}
+
+.controls {
+    -fx-spacing: 5px;
+    -fx-alignment: center;
+}
+
+
+.player-box {
+    -fx-alignment: center;
+    -fx-spacing: 10px;
+}
+
+.slider .track {
+    -fx-background-color: #3b3b3b;
+}
+
+.slider .thumb {
+    -fx-background-color: #ffffff;
+}
+
+.control-button {
+    -fx-background-color: transparent;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7a7a7a;
+}
+
+.last, .next {
+    -fx-font-size: 20px;
+}
+
+.repeat, .shuffle {
+    -fx-font-size: 13px;
+}
+.repeat:hover, .shuffle:hover, .last:hover, .next:hover {
+    -fx-text-fill: #ffffff;
+}
+
+.volume-slider {
+    -fx-max-width: 150px;
+    -fx-min-width: 150px;
+}
+
+

@@ -3,38 +3,14 @@
     -fx-font-family: "Segoe UI";
     -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-min-width: 100%;
     -fx-text-fill: #b7b7b7;
     -fx-alignment: center-left;
     -fx-padding: 15px;
-    -fx-pref-width: 300px;
+    -fx-min-width: 300px;
 }
 
 .side-button:hover {
     -fx-text-fill: #ffffff;
-}
-
-.player-controls {
-    -fx-spacing: 20px;
-    -fx-alignment: center;
-}
-
-.player {
-    -fx-max-width: 750px;
-    -fx-pref-width: 750px;
-}
-
-.slider .track {
-    -fx-background-color: #3b3b3b;
-}
-
-.slider .thumb {
-    -fx-background-color: #ffffff;
-}
-
-.player-box {
-    -fx-alignment: center;
-    -fx-spacing: 10px;
 }
 
 .volume-box {
@@ -47,7 +23,7 @@
 }
 
 .background-box {
-    -fx-padding: 10px;
+    -fx-padding: 12px;
 }
 
 .side-box {
@@ -114,10 +90,4 @@
     -fx-padding: 8px;
 }
 
-.volume {
 
-}
-
-.play-pause {
-    -fx-background-color: transparent;
-}

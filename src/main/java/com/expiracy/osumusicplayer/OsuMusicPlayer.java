@@ -1,7 +1,9 @@
 package com.expiracy.osumusicplayer;
 
+import com.expiracy.osumusicplayer.components.Player;
+import com.expiracy.osumusicplayer.data.Songs;
 import com.expiracy.osumusicplayer.parsing.OsuSongsFolderParser;
-import com.expiracy.osumusicplayer.parsing.Song;
+import com.expiracy.osumusicplayer.data.Song;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,11 +13,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 
 import java.io.File;
@@ -41,25 +40,13 @@ public class OsuMusicPlayer extends Application {
     protected Button searchButton = new Button("Search");
     protected TextField searchField = new TextField();
 
-
-    // Player stuff
-    protected Pane playerBox = new VBox();
-    protected Slider seekSlider = new Slider();
-
-    protected Button playPause = new Button();
-
-    protected MediaPlayer player = null;
-    protected Slider volume = new Slider(0, 100, 50);
-
-    // Volume box
-    protected HBox volumeBox = new HBox();
-
-    private boolean playing = false;
+    protected HBox rightBox = new HBox();
+    public Player player = new Player();
 
     // Songs
-    private Map<Integer, Song> songs = new TreeMap<>();
+    private Map<Integer, Song> songsMap = new TreeMap<>();
 
-
+    private Songs songs = new Songs();
 
     private final EventHandler<ActionEvent> configure = event -> {
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -69,14 +56,14 @@ public class OsuMusicPlayer extends Application {
             return;
 
         OsuSongsFolderParser osuSongsParser = new OsuSongsFolderParser(selectedFolder);
-        this.songs = osuSongsParser.songs;
-        this.displaySongs(this.songs);
+        this.songsMap = osuSongsParser.songs;
+        this.displaySongs(this.songsMap);
     };
 
 
     private final EventHandler<ActionEvent> playSong = event -> {
         Button button = (Button) event.getSource();
-        Song song = this.songs.get(Integer.valueOf(button.getId()));
+        Song song = this.songsMap.get(Integer.valueOf(button.getId()));
 
         ImageView image = (ImageView) this.playingInfoBox.lookup("#playingImage");
         image.setImage(new Image(song.getImage().toURI().toString()));
@@ -89,51 +76,15 @@ public class OsuMusicPlayer extends Application {
         Label artist = (Label) this.playingInfoBox.lookup("#playingArtist");
         artist.setText(song.getArtist());
 
-        Media media = new Media(song.getMp3().toURI().toString());
+        this.player.play(song.getMp3());
 
-        if (this.player != null)
-            this.player.stop();
 
-        this.player = new MediaPlayer(media);
-        this.player.play();
-        this.playPause.setGraphic(this.getControlImage("pause.png"));
-
-        //this.playButton.setOnAction(e -> this.player.play());
-        //this.pauseButton.setOnAction(e -> this.player.pause());
-        //this.stopButton.setOnAction(e -> this.player.stop());
-
-        this.playPause.setOnAction(e -> {
-            this.playing = !this.playing;
-
-            if (this.playing) {
-                this.playPause.setGraphic(this.getControlImage("pause.png"));
-                this.player.play();
-            } else {
-                this.playPause.setGraphic(this.getControlImage("play.png"));
-                this.player.pause();
-            }
-        });
-
-        this.player.setOnReady(() -> this.seekSlider.setMax(media.getDuration().toSeconds()));
-
-        this.player.currentTimeProperty().addListener((observable, oldValue, newValue) ->
-                this.seekSlider.setValue(newValue.toSeconds())
-        );
-
-        this.seekSlider.setOnMousePressed(e ->
-                this.player.seek(Duration.seconds(this.seekSlider.getValue()))
-        );
-        this.seekSlider.setOnMouseDragged(e ->
-                this.player.seek(Duration.seconds(this.seekSlider.getValue()))
-        );
-
-        this.player.volumeProperty().bind(this.volume.valueProperty().divide(100));
 
     };
 
 
     private void searchSongs(String searchTerm) {
-        Map<Integer, Song> filteredMap = this.songs.entrySet().stream()
+        Map<Integer, Song> filteredMap = this.songsMap.entrySet().stream()
                 .filter(entry -> entry.getValue().getTitle().toLowerCase().contains(searchTerm) ||
                         entry.getValue().getArtist().toLowerCase().contains(searchTerm))
                 .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
@@ -142,7 +93,7 @@ public class OsuMusicPlayer extends Application {
     }
 
     private final EventHandler<ActionEvent> home = event -> {
-        this.displaySongs(this.songs);
+        this.displaySongs(this.songsMap);
     };
 
 
@@ -153,11 +104,11 @@ public class OsuMusicPlayer extends Application {
         this.initSongsBox();
         this.initSideBox();
         this.initPlayingInfoBox();
-        this.initPlayerBox();
-        this.initVolumeBox();
+        this.initRightBox();
 
         Scene scene = new Scene(this.createGrid());
-        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("css/styles.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("css/player.css").toExternalForm());
 
         this.stage.setScene(scene);
         this.stage.setMaximized(true);
@@ -165,10 +116,10 @@ public class OsuMusicPlayer extends Application {
         this.stage.show();
     }
 
-    private void initVolumeBox() {
-        this.volumeBox.getStyleClass().add("volume-box");
-        this.volume.getStyleClass().add("volume");
-        this.volumeBox.getChildren().add(this.volume);
+    private void initRightBox() {
+        this.rightBox = new HBox();
+        this.rightBox.getStyleClass().add("volume-box");
+        this.rightBox.getChildren().add(this.player.getVolumeSliderNode());
     }
 
     private GridPane createGrid() {
@@ -192,8 +143,8 @@ public class OsuMusicPlayer extends Application {
 
         layoutPane.add(this.sideBox, 0, 0);
         layoutPane.add(this.songsBox, 1, 0);
-        layoutPane.add(this.playerBox, 1, 1);
-        layoutPane.add(this.volumeBox, 2, 1);
+        layoutPane.add(this.player.getPlayerNode(), 1, 1);
+        layoutPane.add(this.rightBox, 2, 1);
         layoutPane.add(this.playingInfoBox, 0, 1);
 
         layoutPane.getStyleClass().addAll("background-box", "background-boxes");
@@ -210,23 +161,8 @@ public class OsuMusicPlayer extends Application {
         return image;
     }
 
-    private void initPlayerBox() {
-        HBox controls = new HBox();
-
-        this.playPause.getStyleClass().add("play-pause");
-        this.playPause.setGraphic(this.getControlImage("play.png"));
-
-        controls.getChildren().add(this.playPause);
-        controls.getStyleClass().add("player-controls");
-
-        this.seekSlider.getStyleClass().addAll("player");
-        this.playerBox.getStyleClass().add("player-box");
-
-        this.playerBox.getChildren().addAll(controls, this.seekSlider);
-    }
-
     private void initSongsBox() {
-        this.songsBox.getStylesheets().add(getClass().getResource("scroll-bar.css").toExternalForm());
+        this.songsBox.getStylesheets().add(getClass().getResource("css/scroll-bar.css").toExternalForm());
 
         this.songsBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 

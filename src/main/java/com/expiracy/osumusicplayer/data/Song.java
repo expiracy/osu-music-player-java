@@ -1,4 +1,4 @@
-package com.expiracy.osumusicplayer.parsing;
+package com.expiracy.osumusicplayer.data;
 
 import java.io.File;
 

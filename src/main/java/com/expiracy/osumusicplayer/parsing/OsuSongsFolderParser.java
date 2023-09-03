@@ -1,5 +1,7 @@
 package com.expiracy.osumusicplayer.parsing;
 
+import com.expiracy.osumusicplayer.data.Song;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
