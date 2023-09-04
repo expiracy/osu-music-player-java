@@ -29,6 +29,8 @@ public class Player {
     private Slider volumeSlider = new Slider(0, 100, 50);
     public MediaPlayer player = null;
 
+    public PlayerInfo info = new PlayerInfo();
+
     public Player() {
         try {
             this.initControls();

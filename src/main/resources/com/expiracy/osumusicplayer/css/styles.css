@@ -41,15 +41,6 @@
     -fx-background-radius: 10px;
 }
 
-.playing-info-box {
-    -fx-alignment: center-left;
-    -fx-spacing: 10px;
-    -fx-padding: 10px;
-    -fx-pref-height: 75px;
-    -fx-max-height: 75px;
-    -fx-max-width: 300px;
-}
-
 .title:hover {
     -fx-underline: true;
 }
@@ -90,4 +81,19 @@
     -fx-padding: 8px;
 }
 
+.center-left {
+    -fx-alignment: center-left;
+}
+
+.center-right {
+    -fx-alignment: center-right;
+}
+
+.center {
+    -fx-alignment: center;
+}
+
+.spacing {
+    -fx-spacing: 10px;
+}
 

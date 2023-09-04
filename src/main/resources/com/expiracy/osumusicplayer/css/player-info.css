@@ -1,0 +1,6 @@
+.player-info {
+    -fx-padding: 10px;
+    -fx-pref-height: 75px;
+    -fx-max-height: 75px;
+    -fx-max-width: 300px;
+}
