@@ -23,11 +23,13 @@ public class Player {
     private Button play = new Button();
     private Button pause = new Button();
     private Button next = new Button("⏭");
-    private Button repeat = new Button("\uD83D\uDD01");
+    private Button repeat = new Button("\uD83D\uDD04");
 
     private Slider seekSlider = new Slider();
     private Slider volumeSlider = new Slider(0, 100, 50);
     public MediaPlayer player = null;
+
+    private boolean repeating = false;
 
     public PlayerInfo info = new PlayerInfo();
 
@@ -52,6 +54,7 @@ public class Player {
 
     private ImageView getIcon(String path) {
         ImageView image;
+
         try {
             image = new ImageView(new Image(getClass().getResource(path).toURI().toString()));
         } catch (URISyntaxException e) {
@@ -89,8 +92,29 @@ public class Player {
         this.shuffle.getStyleClass().addAll("shuffle", "control-button");
         this.repeat.getStyleClass().addAll("repeat", "control-button");
 
-        this.controls.getStyleClass().add("controls");
+        this.controls.getStyleClass().addAll("center", "spacing-5");
         this.controls.getChildren().addAll(this.shuffle, this.last, playPause, this.next, this.repeat);
+    }
+
+    private void repeatSong() {
+        if (this.repeating) {
+
+            if (!this.repeat.getStyleClass().contains("font-white"))
+                this.repeat.getStyleClass().add("font-white");
+
+            this.player.setOnEndOfMedia(() -> this.player.seek(Duration.ZERO));
+        } else {
+            System.out.println(this.repeat.getStyleClass());
+
+            this.repeat.getStyleClass().remove("font-white");
+
+            System.out.println(this.repeat.getStyleClass());
+
+            this.player.setOnEndOfMedia(() -> {
+                this.player.stop();
+                this.invertPlayPause();
+            });
+        }
     }
 
     public Node getVolumeSliderNode() {
@@ -107,7 +131,8 @@ public class Player {
     }
 
     public void play(File mp3) {
-        this.play(new Media(mp3.toURI().toString()));
+        Media media = new Media(mp3.toURI().toString());
+        this.play(media);
     }
 
     public void invertPlayPause() {
@@ -130,23 +155,32 @@ public class Player {
         if (this.player != null)
             this.player.stop();
 
+        this.initPlayer(mp3);
+    }
+
+    private void initPlayer(Media mp3) {
         this.player = new MediaPlayer(mp3);
+
         this.play.setVisible(false);
         this.pause.setVisible(true);
+
         this.player.play();
 
         this.player.setOnReady(() -> this.seekSlider.setMax(mp3.getDuration().toSeconds()));
 
         this.player.currentTimeProperty().addListener((observable, oldValue, newValue) ->
-            this.seekSlider.setValue(newValue.toSeconds())
+                this.seekSlider.setValue(newValue.toSeconds())
         );
 
-        this.seekSlider.setOnMousePressed(e ->
-            this.player.seek(Duration.seconds(this.seekSlider.getValue()))
-        );
-        this.seekSlider.setOnMouseDragged(e ->
-            this.player.seek(Duration.seconds(this.seekSlider.getValue()))
-        );
+        this.seekSlider.setOnMousePressed(e -> this.player.seek(Duration.seconds(this.seekSlider.getValue())));
+        this.seekSlider.setOnMouseDragged(e -> this.player.seek(Duration.seconds(this.seekSlider.getValue())));
+
+        this.repeat.setOnAction(e -> {
+            this.repeating = !this.repeating;
+            this.repeatSong();
+        });
+
+        this.repeatSong();
 
         this.player.volumeProperty().bind(this.volumeSlider.valueProperty().divide(100));
     }

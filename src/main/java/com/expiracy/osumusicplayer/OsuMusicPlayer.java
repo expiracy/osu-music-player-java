@@ -2,10 +2,7 @@ package com.expiracy.osumusicplayer;
 
 import com.expiracy.osumusicplayer.components.Songs;
 import com.expiracy.osumusicplayer.parsing.OsuSongsFolderParser;
-import com.expiracy.osumusicplayer.components.Song;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -15,40 +12,15 @@ import javafx.stage.Stage;
 
 
 import java.io.File;
-import java.util.Map;
 
 public class OsuMusicPlayer extends Application {
     protected Stage stage;
-
     // Songs box
     protected ScrollPane songsBox = new ScrollPane();
-
-    // Side buttons
-    protected VBox sideBox = new VBox();
-    protected Button configureButton = new Button("Configure");
-    protected Button homeButton = new Button("Home");
-    protected Button searchButton = new Button("Search");
-    protected TextField searchField = new TextField();
-
+    protected VBox sideBar = new VBox();
     protected HBox rightBox = new HBox();
+    // Songs object contains Player and PlayerInfo objects
     private Songs songs = new Songs();
-
-    private final EventHandler<ActionEvent> configure = event -> {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        File selectedFolder = directoryChooser.showDialog(this.stage);
-
-        if (selectedFolder == null)
-            return;
-
-        OsuSongsFolderParser osuSongsParser = new OsuSongsFolderParser(selectedFolder);
-        this.songs.setSongs(osuSongsParser.songs);
-        this.songsBox.setContent(this.songs.getNode());
-    };
-
-
-    private final EventHandler<ActionEvent> playSong = event -> {
-        this.songs.play(Integer.valueOf(((Button) event.getSource()).getId()));
-    };
 
     @Override
     public void start(Stage stage) {
@@ -62,23 +34,25 @@ public class OsuMusicPlayer extends Application {
         scene.getStylesheets().add(getClass().getResource("css/styles.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("css/player.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("css/player-info.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("css/font.css").toExternalForm());
 
-        this.stage.setScene(scene);
-        this.stage.setMaximized(true);
-        this.stage.setTitle("Music Player for osu!");
-        this.stage.show();
-        this.sideBox.requestFocus();
+        stage.setScene(scene);
+        stage.setMaximized(true);
+        stage.setTitle("Music Player for osu!");
+        stage.show();
+        this.sideBar.requestFocus();
     }
 
     private void initRightBox() {
         this.rightBox = new HBox();
-        this.rightBox.getStyleClass().add("volume-box");
+        this.rightBox.getStyleClass().addAll("center-right", "padding-8");
+
         this.rightBox.getChildren().add(this.songs.player.getVolumeSliderNode());
     }
 
     private GridPane createGrid() {
         GridPane layoutPane = new GridPane();
-        layoutPane.setHgap(10);
+        layoutPane.setHgap(8);
         layoutPane.setStyle("-fx-background-color: black");
 
         ColumnConstraints column1 = new ColumnConstraints(300);
@@ -95,7 +69,7 @@ public class OsuMusicPlayer extends Application {
 
         GridPane.setColumnSpan(this.songsBox, 2);
 
-        layoutPane.add(this.sideBox, 0, 0);
+        layoutPane.add(this.sideBar, 0, 0);
         layoutPane.add(this.songsBox, 1, 0);
         layoutPane.add(this.songs.player.getPlayerNode(), 1, 1);
         layoutPane.add(this.rightBox, 2, 1);
@@ -117,27 +91,47 @@ public class OsuMusicPlayer extends Application {
     }
 
     private void initSideBox() {
-        this.sideBox.getStyleClass().add("side-box");
-        this.homeButton.getStyleClass().add("side-button");
-        this.searchButton.getStyleClass().add("side-button");
-        this.configureButton.getStyleClass().add("side-button");
+        this.sideBar.getStyleClass().add("side-box");
 
-        this.searchField.getStyleClass().add("side-button");
-        this.searchField.setPromptText("Search...");
+        Button homeButton = new Button("\uD83C\uDFE0   Home");
+        Button searchButton = new Button("Search");
+        Button configureButton = new Button("\uD83D\uDD27   Configure");
+        TextField searchField = new TextField();
+
+        homeButton.getStyleClass().add("side-button");
+        searchButton.getStyleClass().add("side-button");
+        configureButton.getStyleClass().add("side-button");
 
 
-        this.searchField.setOnKeyPressed(event -> {
+
+        searchField.getStyleClass().add("side-button");
+        searchField.setPromptText("\uD83D\uDD0D   Search...");
+
+        searchField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                Songs results = this.songs.search(this.searchField.getText().toLowerCase());
-                this.searchField.clear();
+                Songs results = this.songs.search(searchField.getText().toLowerCase());
+                searchField.clear();
                 this.songsBox.setContent(results.getNode());
-                this.sideBox.requestFocus();
+                this.sideBar.requestFocus();
             }
         });
 
-        this.configureButton.setOnAction(this.configure);
+        configureButton.setOnAction(e -> {
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            File selectedFolder = directoryChooser.showDialog(this.stage);
 
-        this.sideBox.getChildren().addAll(this.searchField, this.homeButton, this.configureButton);
+            if (selectedFolder == null)
+                return;
+
+            OsuSongsFolderParser osuSongsParser = new OsuSongsFolderParser(selectedFolder);
+
+            this.songs.setSongs(osuSongsParser.songs);
+            this.songsBox.setContent(this.songs.getNode());
+        });
+
+        homeButton.setOnAction(e -> this.songsBox.setContent(this.songs.getNode()));
+
+        this.sideBar.getChildren().addAll(searchField, homeButton, configureButton);
     }
 
     public static void main(String[] args) {

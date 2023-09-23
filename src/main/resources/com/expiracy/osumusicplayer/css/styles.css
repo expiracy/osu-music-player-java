@@ -1,21 +1,16 @@
 .side-button {
     -fx-background-color: transparent;
     -fx-font-family: "Segoe UI";
-    -fx-font-size: 15px;
+    -fx-font-size: 15;
     -fx-font-weight: bold;
     -fx-text-fill: #b7b7b7;
     -fx-alignment: center-left;
-    -fx-padding: 15px;
-    -fx-min-width: 300px;
+    -fx-padding: 15;
+    -fx-min-width: 300;
 }
 
 .side-button:hover {
     -fx-text-fill: #ffffff;
-}
-
-.volume-box {
-    -fx-alignment: center-right;
-    -fx-padding: 10px;
 }
 
 .background-boxes > * {
@@ -23,12 +18,24 @@
 }
 
 .background-box {
-    -fx-padding: 12px;
+    -fx-padding: 16 16 8 16;
+}
+
+.height-4 {
+    -fx-pref-height: 4;
+}
+
+.height-8 {
+    -fx-pref-height: 8;
+}
+
+.padding-8 {
+    -fx-padding: 8;
 }
 
 .side-box {
     -fx-background-color: #181818;
-    -fx-background-radius: 10px;
+    -fx-background-radius: 10;
 }
 
 .song-buttons {
@@ -38,7 +45,7 @@
 
 .songs-box > .viewport {
     -fx-background-color: #181818;
-    -fx-background-radius: 10px;
+    -fx-background-radius: 10;
 }
 
 .title:hover {
@@ -51,8 +58,8 @@
 
 .song-button {
     -fx-background-color: transparent;
-    -fx-min-height: 50px;
-    -fx-padding: 10px;
+    -fx-min-height: 50;
+    -fx-padding: 10;
     -fx-font-family: "Segoe UI";
     -fx-min-width: 100%;
     -fx-pref-width: 2147483647;
@@ -60,25 +67,31 @@
 
 .title {
     -fx-text-fill: #ffffff;
-    -fx-font-size: 14px;
+    -fx-font-size: 14;
     -fx-font-weight: bold;
 }
 
 .artist {
     -fx-text-fill: #bebebe;
-    -fx-font-size: 11px;
+    -fx-font-size: 11;
 }
 
 .song-button:hover {
     -fx-background-color: #232323;
 }
 
+.padding-4 {
+    -fx-padding: 4;
+}
+
 .song-number {
-    -fx-font-size: 15px;
+    -fx-font-size: 15;
     -fx-text-fill: #bebebe;
     -fx-alignment: center;
     -fx-font-weight: bold;
-    -fx-padding: 8px;
+    -fx-padding: 3;
+    -fx-max-width: 40;
+    -fx-pref-width: 40;
 }
 
 .center-left {
@@ -93,7 +106,18 @@
     -fx-alignment: center;
 }
 
-.spacing {
-    -fx-spacing: 10px;
+.spacing-10 {
+    -fx-spacing: 10;
 }
+
+.spacing-5 {
+    -fx-spacing: 5;
+}
+
+.no-bg {
+    -fx-background-color: transparent;
+}
+
+
+
 

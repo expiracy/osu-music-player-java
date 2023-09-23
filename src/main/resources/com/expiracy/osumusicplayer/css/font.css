@@ -1,0 +1,19 @@
+.font-15 {
+    -fx-font-size: 15;
+}
+
+.font-off-white {
+    -fx-text-fill: #bebebe;
+}
+
+.font-white {
+    -fx-text-fill: #ffffff;
+}
+
+.font-set {
+    -fx-font-family: "Segoe UI";
+}
+
+.font-bold {
+    -fx-font-weight: bold;
+}

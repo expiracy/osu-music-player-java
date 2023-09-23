@@ -3,28 +3,33 @@
 }
 
 .seek-slider {
-    -fx-max-width: 750px;
-    -fx-pref-width: 750px;
-    -fx-min-width: 250px;
+    -fx-max-width: 750;
+    -fx-pref-width: 750;
+    -fx-min-width: 250;
 }
 
 .controls {
-    -fx-spacing: 5px;
+    -fx-spacing: 0;
     -fx-alignment: center;
 }
 
 
 .player-box {
     -fx-alignment: center;
-    -fx-spacing: 10px;
+    -fx-spacing: 5;
+
 }
 
 .slider .track {
     -fx-background-color: #3b3b3b;
+    -fx-max-height: 4;
+    -fx-pref-height: 4;
 }
 
 .slider .thumb {
     -fx-background-color: #ffffff;
+    -fx-pref-width: 12;
+    -fx-pref-height: 12;
 }
 
 .control-button {
@@ -34,19 +39,20 @@
 }
 
 .last, .next {
-    -fx-font-size: 20px;
+    -fx-font-size: 20;
 }
 
 .repeat, .shuffle {
-    -fx-font-size: 13px;
+    -fx-font-size: 13;
 }
 .repeat:hover, .shuffle:hover, .last:hover, .next:hover {
     -fx-text-fill: #ffffff;
 }
 
 .volume-slider {
-    -fx-max-width: 150px;
-    -fx-min-width: 150px;
+    -fx-max-width: 150;
+    -fx-min-width: 150;
 }
+
 
 

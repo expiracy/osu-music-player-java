@@ -11,8 +11,6 @@ import java.io.File;
 import java.net.URISyntaxException;
 
 public class PlayerInfo {
-    public HBox node;
-
     private Label title;
     private Label artist;
     private ImageView image;
@@ -20,13 +18,6 @@ public class PlayerInfo {
     public PlayerInfo() {
         this.initImage();
         this.initInfo();
-        this.initNode();
-    }
-
-    private void initNode() {
-        this.node = new HBox();
-        this.node.getStyleClass().addAll("center-left", "spacing", "player-info");
-        this.node.getChildren().addAll(this.image, this.getSongInfoNode());
     }
 
     private void initInfo() {
@@ -76,6 +67,10 @@ public class PlayerInfo {
     }
 
     public Node getNode() {
-        return this.node;
+        HBox node = new HBox();
+        node.getStyleClass().addAll("center-left", "spacing-10", "player-info");
+        node.getChildren().addAll(this.image, this.getSongInfoNode());
+
+        return node;
     }
 }

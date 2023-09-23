@@ -1,4 +1,4 @@
 package com.expiracy.osumusicplayer.components;
 
-public class SideBar {
+public class Search {
 }

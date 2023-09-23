@@ -2,7 +2,8 @@
 .scroll-bar:vertical {
     -fx-background-color: transparent;
     -fx-padding: 0;
-    -fx-background-radius: 5px;
+    -fx-background-radius: 5;
+    -fx-pref-width: 8;
 }
 
 .scroll-bar:vertical .increment-button {
@@ -16,9 +17,8 @@
 .scroll-bar:vertical .thumb {
     -fx-background-color: #797979;
     -fx-background-insets: 0;
-    -fx-background-radius: 5px;
+    -fx-background-radius: 5;
     -fx-padding: 0;
-    -fx-pref-width: 5px;
 }
 
 .scroll-bar:vertical .thumb:hover {
@@ -39,7 +39,7 @@
 .scroll-bar:horizontal {
     -fx-background-color: transparent;
     -fx-padding: 0;
-    -fx-background-radius: 5px;
+    -fx-background-radius: 5;
 }
 
 .scroll-bar:horizontal .increment-button {
@@ -53,9 +53,9 @@
 .scroll-bar:horizontal .thumb {
     -fx-background-color: #797979;
     -fx-background-insets: 0;
-    -fx-background-radius: 5px;
+    -fx-background-radius: 5;
     -fx-padding: 0;
-    -fx-pref-width: 5px;
+    -fx-pref-width: 5;
 }
 
 .scroll-bar:horizontal .thumb:hover {

@@ -82,16 +82,15 @@ public class Song {
     public static Node getNode(Song song, Integer number) {
         HBox songInfo = new HBox();
 
-        songInfo.getStyleClass().addAll("center-left", "spacing");
+        songInfo.getStyleClass().addAll("center-left", "spacing-10");
 
         Label numberLabel = new Label(number.toString());
         numberLabel.getStyleClass().add("song-number");
 
         Node titleAndArtist = getNode(song);
-        System.out.println(song.toString());
         songInfo.getChildren().addAll(numberLabel, titleAndArtist);
 
-        return songInfo;
+        return songInfo;    
 
     }
 
