@@ -14,6 +14,10 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 public class Player {
     private HBox controls = new HBox();
@@ -24,6 +28,9 @@ public class Player {
     private Button pause = new Button();
     private Button next = new Button("⏭");
     private Button repeat = new Button("\uD83D\uDD04");
+
+
+    public SongsQueue queue = new SongsQueue();
 
     private Slider seekSlider = new Slider();
     private Slider volumeSlider = new Slider(0, 100, 50);
@@ -89,32 +96,51 @@ public class Player {
 
         this.last.getStyleClass().addAll("last", "control-button");
         this.next.getStyleClass().addAll("next", "control-button");
+
+        this.next.setOnAction(e -> {
+            Song next = this.queue.getNext();
+            if (next == null) return;
+            this.play(next);
+        });
+        this.last.setOnAction(e -> {
+            Song last = this.queue.getLast();
+            if (last == null) return;
+            this.play(last);
+        });
+
         this.shuffle.getStyleClass().addAll("shuffle", "control-button");
         this.repeat.getStyleClass().addAll("repeat", "control-button");
 
-        this.controls.getStyleClass().addAll("center", "spacing-5");
+        this.controls.getStyleClass().addAll("controls");
         this.controls.getChildren().addAll(this.shuffle, this.last, playPause, this.next, this.repeat);
+    }
+
+    public void queueSong(Song song) {
+        this.queue.add(song);
     }
 
     private void repeatSong() {
         if (this.repeating) {
-
             if (!this.repeat.getStyleClass().contains("font-white"))
                 this.repeat.getStyleClass().add("font-white");
 
             this.player.setOnEndOfMedia(() -> this.player.seek(Duration.ZERO));
-        } else {
-            System.out.println(this.repeat.getStyleClass());
 
+        } else {
             this.repeat.getStyleClass().remove("font-white");
 
-            System.out.println(this.repeat.getStyleClass());
-
-            this.player.setOnEndOfMedia(() -> {
-                this.player.stop();
-                this.invertPlayPause();
-            });
+            this.player.setOnEndOfMedia(this::playQueued);
         }
+    }
+
+    private void playQueued() {
+        if (!this.queue.isEmpty()) {
+            this.play(this.queue.getNext());
+        } else {
+            this.player.stop();
+            this.invertPlayPause();
+        }
+
     }
 
     public Node getVolumeSliderNode() {
@@ -129,6 +155,12 @@ public class Player {
 
         return node;
     }
+
+    public void play(Song song) {
+        this.info.setSong(song);
+        this.play(song.getMp3());
+    }
+
 
     public void play(File mp3) {
         Media media = new Media(mp3.toURI().toString());

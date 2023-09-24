@@ -1,23 +1,31 @@
 package com.expiracy.osumusicplayer.components;
 
 import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.File;
 
 public class Song {
+    private Integer songId;
     private File mp3;
     private File image;
     private String title;
     private String artist;
 
     public Song() {
+        this.songId = null;
         this.mp3 = null;
         this.image = null;
         this.title = null;
         this.artist = null;
+    }
+
+    public void setSongId(Integer songId) {
+        this.songId = songId;
     }
 
     public void setMp3(File mp3) {

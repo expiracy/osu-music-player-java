@@ -3,11 +3,13 @@ package com.expiracy.osumusicplayer.parsing;
 import com.expiracy.osumusicplayer.components.Song;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OsuSongsFolderParser {
-    public Map<Integer, Song> songs = new HashMap<>();
+    public List<Song> songs = new ArrayList<>();
 
     public OsuSongsFolderParser(File songsFolder) {
         if (!songsFolder.getName().equals("Songs")) return;
@@ -27,12 +29,13 @@ public class OsuSongsFolderParser {
             if (splitFolderName.length == 0) continue;
 
             int beatmapId = Integer.parseInt(splitFolderName[0]);
-
             Song song = this.parseBeatmapFolder(beatmapFolder);
 
             if (song == null) continue;
 
-            songs.put(beatmapId, song);
+            song.setSongId(beatmapId);
+
+            this.songs.add(song);
         }
 
     }

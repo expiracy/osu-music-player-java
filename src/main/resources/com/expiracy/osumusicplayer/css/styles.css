@@ -43,6 +43,10 @@
     -fx-background-color: transparent;
 }
 
+.side-padding-32 {
+    -fx-padding: 0 32 0 32;
+}
+
 .songs-box > .viewport {
     -fx-background-color: #181818;
     -fx-background-radius: 10;
@@ -118,6 +122,7 @@
     -fx-background-color: transparent;
 }
 
-
-
+.bg-dark-grey {
+    -fx-background-color: #2a2a2a;
+}
 

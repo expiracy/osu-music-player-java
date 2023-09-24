@@ -1,7 +1,6 @@
 /* Styling vertical scroll bar */
 .scroll-bar:vertical {
     -fx-background-color: transparent;
-    -fx-padding: 0;
     -fx-background-radius: 5;
     -fx-pref-width: 8;
 }

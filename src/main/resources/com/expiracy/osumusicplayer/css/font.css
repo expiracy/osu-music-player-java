@@ -2,6 +2,14 @@
     -fx-font-size: 15;
 }
 
+.font-8 {
+    -fx-font-size: 8;
+}
+
+.font-12 {
+    -fx-font-size: 12;
+}
+
 .font-off-white {
     -fx-text-fill: #bebebe;
 }
@@ -10,7 +18,7 @@
     -fx-text-fill: #ffffff;
 }
 
-.font-set {
+.font-main {
     -fx-font-family: "Segoe UI";
 }
 

@@ -27,7 +27,7 @@ public class OsuMusicPlayer extends Application {
         this.stage = stage;
 
         this.initSongsBox();
-        this.initSideBox();
+        this.initSideBar();
         this.initRightBox();
 
         Scene scene = new Scene(this.createGrid());
@@ -35,11 +35,13 @@ public class OsuMusicPlayer extends Application {
         scene.getStylesheets().add(getClass().getResource("css/player.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("css/player-info.css").toExternalForm());
         scene.getStylesheets().add(getClass().getResource("css/font.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("css/context-menu.css").toExternalForm());
 
         stage.setScene(scene);
         stage.setMaximized(true);
         stage.setTitle("Music Player for osu!");
         stage.show();
+
         this.sideBar.requestFocus();
     }
 
@@ -90,21 +92,21 @@ public class OsuMusicPlayer extends Application {
         this.songsBox.setContent(this.songs.getNode());
     }
 
-    private void initSideBox() {
+    private void initSideBar() {
         this.sideBar.getStyleClass().add("side-box");
 
         Button homeButton = new Button("\uD83C\uDFE0   Home");
         Button searchButton = new Button("Search");
+        Button queueButton = new Button("Q   Queue");
         Button configureButton = new Button("\uD83D\uDD27   Configure");
         TextField searchField = new TextField();
 
         homeButton.getStyleClass().add("side-button");
         searchButton.getStyleClass().add("side-button");
+        queueButton.getStyleClass().add("side-button");
         configureButton.getStyleClass().add("side-button");
-
-
-
         searchField.getStyleClass().add("side-button");
+
         searchField.setPromptText("\uD83D\uDD0D   Search...");
 
         searchField.setOnKeyPressed(event -> {
@@ -114,6 +116,10 @@ public class OsuMusicPlayer extends Application {
                 this.songsBox.setContent(results.getNode());
                 this.sideBar.requestFocus();
             }
+        });
+
+        queueButton.setOnAction(e -> {
+            this.songsBox.setContent(this.songs.getQueue().getNode());
         });
 
         configureButton.setOnAction(e -> {
@@ -131,7 +137,7 @@ public class OsuMusicPlayer extends Application {
 
         homeButton.setOnAction(e -> this.songsBox.setContent(this.songs.getNode()));
 
-        this.sideBar.getChildren().addAll(searchField, homeButton, configureButton);
+        this.sideBar.getChildren().addAll(searchField, homeButton, queueButton, configureButton);
     }
 
     public static void main(String[] args) {

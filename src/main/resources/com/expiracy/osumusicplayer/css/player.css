@@ -6,11 +6,13 @@
     -fx-max-width: 750;
     -fx-pref-width: 750;
     -fx-min-width: 250;
+    -fx-padding: 0 0 8 0;
 }
 
 .controls {
-    -fx-spacing: 0;
+    -fx-spacing: 4;
     -fx-alignment: center;
+    -fx-padding: 8 0 0 0;
 }
 
 
@@ -51,7 +53,7 @@
 
 .volume-slider {
     -fx-max-width: 150;
-    -fx-min-width: 150;
+    -fx-min-width: 50;
 }
 
 
