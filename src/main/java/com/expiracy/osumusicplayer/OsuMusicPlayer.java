@@ -4,23 +4,27 @@ import com.expiracy.osumusicplayer.components.Songs;
 import com.expiracy.osumusicplayer.parsing.OsuSongsFolderParser;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
-
 import java.io.File;
 
+
 public class OsuMusicPlayer extends Application {
-    protected Stage stage;
+    public Stage stage;
+
     // Songs box
     protected ScrollPane songsBox = new ScrollPane();
+
     protected VBox sideBar = new VBox();
     protected HBox rightBox = new HBox();
     // Songs object contains Player and PlayerInfo objects
-    private Songs songs = new Songs();
+    private final Songs songs = new Songs(songsBox);
 
     @Override
     public void start(Stage stage) {
@@ -98,12 +102,14 @@ public class OsuMusicPlayer extends Application {
         Button homeButton = new Button("\uD83C\uDFE0   Home");
         Button searchButton = new Button("Search");
         Button queueButton = new Button("Q   Queue");
+        Button historyButton = new Button("\uD83D\uDCD5   History");
         Button configureButton = new Button("\uD83D\uDD27   Configure");
         TextField searchField = new TextField();
 
         homeButton.getStyleClass().add("side-button");
         searchButton.getStyleClass().add("side-button");
         queueButton.getStyleClass().add("side-button");
+        historyButton.getStyleClass().add("side-button");
         configureButton.getStyleClass().add("side-button");
         searchField.getStyleClass().add("side-button");
 
@@ -122,6 +128,10 @@ public class OsuMusicPlayer extends Application {
             this.songsBox.setContent(this.songs.getQueue().getNode());
         });
 
+        historyButton.setOnAction(e -> {
+            this.songsBox.setContent(this.songs.getHistory().getNode());
+        });
+
         configureButton.setOnAction(e -> {
             DirectoryChooser directoryChooser = new DirectoryChooser();
             File selectedFolder = directoryChooser.showDialog(this.stage);
@@ -135,9 +145,9 @@ public class OsuMusicPlayer extends Application {
             this.songsBox.setContent(this.songs.getNode());
         });
 
-        homeButton.setOnAction(e -> this.songsBox.setContent(this.songs.getNode()));
+        homeButton.setOnAction(e -> this.songsBox.setContent(this.songs.getHome().getNode()));
 
-        this.sideBar.getChildren().addAll(searchField, homeButton, queueButton, configureButton);
+        this.sideBar.getChildren().addAll(searchField, homeButton, queueButton, historyButton, configureButton);
     }
 
     public static void main(String[] args) {

@@ -2,6 +2,7 @@ package com.expiracy.osumusicplayer.components;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,26 +15,26 @@ import javafx.util.Duration;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 
 public class Player {
-    private HBox controls = new HBox();
+    public Songs.Content content;
 
-    private Button shuffle = new Button("\uD83D\uDD00");
-    private Button last = new Button("⏮");
-    private Button play = new Button();
-    private Button pause = new Button();
-    private Button next = new Button("⏭");
-    private Button repeat = new Button("\uD83D\uDD04");
+    private final HBox controls = new HBox();
 
+    private final Button shuffle = new Button("\uD83D\uDD00");
+    private final Button last = new Button("⏮");
+    private final Button play = new Button();
+    private final Button pause = new Button();
+    private final Button next = new Button("⏭");
+    private final Button repeat = new Button("\uD83D\uDD04");
 
-    public SongsQueue queue = new SongsQueue();
+    public SongQueue queue = new SongQueue();
+    public SongHistory history = new SongHistory();
 
-    private Slider seekSlider = new Slider();
-    private Slider volumeSlider = new Slider(0, 100, 50);
+    public ScrollPane songsBox = null;
+
+    private final Slider seekSlider = new Slider();
+    private final Slider volumeSlider = new Slider(0, 100, 50);
     public MediaPlayer player = null;
 
     private boolean repeating = false;
@@ -49,6 +50,10 @@ public class Player {
 
         this.initSeekSlider();
         this.initVolume();
+    }
+
+    public void setSongsBox(ScrollPane songsBox) {
+        this.songsBox = songsBox;
     }
 
     private void initVolume() {
@@ -98,14 +103,14 @@ public class Player {
         this.next.getStyleClass().addAll("next", "control-button");
 
         this.next.setOnAction(e -> {
-            Song next = this.queue.getNext();
-            if (next == null) return;
-            this.play(next);
+            this.playNext();
+            this.updateSongsBox();
         });
         this.last.setOnAction(e -> {
-            Song last = this.queue.getLast();
+            Song last = this.history.getLast();
             if (last == null) return;
             this.play(last);
+            this.updateSongsBox();
         });
 
         this.shuffle.getStyleClass().addAll("shuffle", "control-button");
@@ -119,7 +124,7 @@ public class Player {
         this.queue.add(song);
     }
 
-    private void repeatSong() {
+    public void onMediaEnd() {
         if (this.repeating) {
             if (!this.repeat.getStyleClass().contains("font-white"))
                 this.repeat.getStyleClass().add("font-white");
@@ -129,18 +134,36 @@ public class Player {
         } else {
             this.repeat.getStyleClass().remove("font-white");
 
-            this.player.setOnEndOfMedia(this::playQueued);
+            this.player.setOnEndOfMedia(() -> {
+                this.playNext();
+                this.updateSongsBox();
+            });
         }
     }
 
-    private void playQueued() {
-        if (!this.queue.isEmpty()) {
-            this.play(this.queue.getNext());
-        } else {
-            this.player.stop();
-            this.invertPlayPause();
+    private void updateSongsBox() {
+        switch (this.content) {
+            case QUEUE -> this.songsBox.setContent(new Songs(this.queue.getList(), this).getNode());
+            case HISTORY -> this.songsBox.setContent(new Songs(this.history.getList(), this).getNode());
         }
 
+    }
+
+    private void playNext() {
+        Song next = this.history.getNext();
+
+        if (next == null) {
+            next = this.queue.getNext();
+
+            if (next != null) {
+                this.history.add(next);
+            } else {
+                this.player.stop();
+                this.pausePlayer();
+                return;
+            }
+        }
+        this.play(next);
     }
 
     public Node getVolumeSliderNode() {
@@ -156,6 +179,11 @@ public class Player {
         return node;
     }
 
+    public void playAndRecord(Song song) {
+        this.history.add(song);
+        this.play(song);
+    }
+
     public void play(Song song) {
         this.info.setSong(song);
         this.play(song.getMp3());
@@ -164,7 +192,13 @@ public class Player {
 
     public void play(File mp3) {
         Media media = new Media(mp3.toURI().toString());
-        this.play(media);
+        this.initPlayer(media);
+    }
+
+    public void pausePlayer() {
+        this.play.setVisible(true);
+        this.pause.setVisible(false);
+        this.player.pause();
     }
 
     public void invertPlayPause() {
@@ -176,21 +210,14 @@ public class Player {
             this.pause.setVisible(true);
             this.player.play();
         } else {
-            this.play.setVisible(true);
-            this.pause.setVisible(false);
-            this.player.pause();
+            this.pausePlayer();
         }
     }
 
-    public void play(Media mp3) {
-
+    private void initPlayer(Media mp3) {
         if (this.player != null)
             this.player.stop();
 
-        this.initPlayer(mp3);
-    }
-
-    private void initPlayer(Media mp3) {
         this.player = new MediaPlayer(mp3);
 
         this.play.setVisible(false);
@@ -209,10 +236,10 @@ public class Player {
 
         this.repeat.setOnAction(e -> {
             this.repeating = !this.repeating;
-            this.repeatSong();
+            this.onMediaEnd();
         });
 
-        this.repeatSong();
+        this.onMediaEnd();
 
         this.player.volumeProperty().bind(this.volumeSlider.valueProperty().divide(100));
     }

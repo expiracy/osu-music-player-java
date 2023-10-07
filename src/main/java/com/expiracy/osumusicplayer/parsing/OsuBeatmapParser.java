@@ -31,20 +31,15 @@ public class OsuBeatmapParser {
 
                 if (line.startsWith("Title:")) {
                     this.title = line.substring(6).trim();
-                }
-                else if (line.startsWith("Artist:")) {
+                } else if (line.startsWith("Artist:")) {
                     this.artist = line.substring(7).trim();
-                }
-                else if (line.startsWith("AudioFilename:")) {
+                } else if (line.startsWith("AudioFilename:")) {
                     this.audioFileName = line.substring(14).trim();
-                }
-                else if (line.startsWith("Tags:") && line.length() >= 6) {
+                } else if (line.startsWith("Tags:") && line.length() >= 6) {
                     Collections.addAll(this.tags, line.substring(5).trim().split(" "));
-                }
-                else if (line.startsWith("[Events]")) {
+                } else if (line.startsWith("[Events]")) {
                     inEvents = true;
-                }
-                else if (inEvents && line.startsWith("0,0,")) {
+                } else if (inEvents && line.startsWith("0,0,")) {
 
                     Pattern pattern = Pattern.compile("\"(.*?)\"");
                     Matcher matcher = pattern.matcher(line);

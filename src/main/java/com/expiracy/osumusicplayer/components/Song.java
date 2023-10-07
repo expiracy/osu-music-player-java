@@ -1,31 +1,29 @@
 package com.expiracy.osumusicplayer.components;
 
 import javafx.scene.Node;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.File;
 
 public class Song {
-    private Integer songId;
+    private Integer id;
     private File mp3;
     private File image;
     private String title;
     private String artist;
 
     public Song() {
-        this.songId = null;
+        this.id = null;
         this.mp3 = null;
         this.image = null;
         this.title = null;
         this.artist = null;
     }
 
-    public void setSongId(Integer songId) {
-        this.songId = songId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setMp3(File mp3) {
@@ -98,13 +96,17 @@ public class Song {
         Node titleAndArtist = getNode(song);
         songInfo.getChildren().addAll(numberLabel, titleAndArtist);
 
-        return songInfo;    
+        return songInfo;
 
     }
 
     @Override
     public String toString() {
         return this.title;
+    }
+
+    public Integer getId() {
+        return this.id;
     }
 }
 

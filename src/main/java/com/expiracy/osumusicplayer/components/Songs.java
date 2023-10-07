@@ -4,13 +4,22 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Songs {
+    public enum Content {
+        HOME,
+        QUEUE,
+        HISTORY,
+        SEARCH
+    }
+
     public List<Song> songs = new ArrayList<>();
     public Player player = new Player();
 
@@ -19,8 +28,9 @@ public class Songs {
         this.player = player;
     }
 
-    public Songs() {
-
+    public Songs(ScrollPane songsBox) {
+        this.player.content = Content.HOME;
+        this.player.setSongsBox(songsBox);
     }
 
     public Node getNode() {
@@ -28,7 +38,7 @@ public class Songs {
     }
 
     public void play(Song song) {
-        this.player.play(song);
+        this.player.playAndRecord(song);
     }
 
     public Node getNode(List<Song> songs) {
@@ -45,7 +55,7 @@ public class Songs {
             songButton.setOnContextMenuRequested(e -> this.getContextMenuNode(song).show(songButton, e.getScreenX(), e.getScreenY()));
 
             // Element ID is the song number
-            songButton.setId(songNumber.toString());
+            songButton.setId(song.getId().toString());
 
             songButton.setGraphic(song.getNode(songNumber));
 
@@ -70,8 +80,10 @@ public class Songs {
                 .stream()
                 .filter(song ->
                         song.getTitle().toLowerCase().contains(searchTerm)
-                        || song.getArtist().toLowerCase().contains(searchTerm)
+                                || song.getArtist().toLowerCase().contains(searchTerm)
                 ).collect(Collectors.toList());
+
+        this.player.content = Content.SEARCH;
 
         return new Songs(results, this.player);
     }
@@ -80,8 +92,19 @@ public class Songs {
         this.songs = songs;
     }
 
+    public Songs getHome() {
+        this.player.content = Content.HOME;
+        return this;
+    }
+
     public Songs getQueue() {
+        this.player.content = Content.QUEUE;
         return new Songs(this.player.queue.getList(), this.player);
+    }
+
+    public Songs getHistory() {
+        this.player.content = Content.HISTORY;
+        return new Songs(this.player.history.getList(), this.player);
     }
 
     public ContextMenu getContextMenuNode(Song song) {
@@ -89,9 +112,7 @@ public class Songs {
         contextMenu.getStyleClass().addAll("context-menu", "font-off-white", "font-main", "font-12", "center-left", "font-bold");
         MenuItem queue = new MenuItem("Queue");
 
-        queue.setOnAction(e -> {
-            this.player.queueSong(song);
-        });
+        queue.setOnAction(e -> this.player.queueSong(song));
 
         contextMenu.getItems().addAll(queue);
 

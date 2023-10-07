@@ -4,9 +4,7 @@ import com.expiracy.osumusicplayer.components.Song;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class OsuSongsFolderParser {
     public List<Song> songs = new ArrayList<>();
@@ -33,7 +31,7 @@ public class OsuSongsFolderParser {
 
             if (song == null) continue;
 
-            song.setSongId(beatmapId);
+            song.setId(beatmapId);
 
             this.songs.add(song);
         }
